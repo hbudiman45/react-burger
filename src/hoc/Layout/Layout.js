@@ -1,8 +1,8 @@
 import React from "react";
-import Aux from "../../hoc/Aux";
-import Toolbar from "../Navigation/Toolbar";
+import Aux from "../Aux/Aux";
+import Toolbar from "../../components/Navigation/Toolbar";
 import "./Layout.css";
-import SideDrawer from "../Navigation/SideDrawer";
+import SideDrawer from "../../components/Navigation/SideDrawer";
 
 const Layout = props => {
   return (
