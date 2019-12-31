@@ -4,7 +4,7 @@ import burderLogo from "../../assets/images/burger-logo.png";
 
 const Logo = props => {
   return (
-    <div className="Logo">
+    <div className="Logo" style={{ height: props.height }}>
       <img src={burderLogo} alt="burger logo" />
     </div>
   );
