@@ -4,13 +4,16 @@ import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary";
+import BaseService from "../../services/BaseServices";
+import Spinner from "../../components/UI/Spinner";
+import Constants from "../../config/Constants";
 
-const INGREDIENTS_PRICES = {
-  salad: 0.5,
-  cheese: 0.4,
-  meat: 1.3,
-  bacon: 0.7
-};
+// const INGREDIENTS_PRICES = {
+//   salad: 0.5,
+//   cheese: 0.4,
+//   meat: 1.3,
+//   bacon: 0.7
+// };
 
 class BurgerBuilder extends Component {
   state = {
@@ -22,7 +25,8 @@ class BurgerBuilder extends Component {
     },
     totalPrice: 4,
     purchaseable: false,
-    purchasing: false
+    purchasing: false,
+    loading: false
   };
 
   updatePurchaseState = ingredients => {
@@ -41,7 +45,7 @@ class BurgerBuilder extends Component {
       ...this.state.ingredients
     };
     updatedIngredients[type] = updatedCount;
-    const priceAddition = INGREDIENTS_PRICES[type];
+    const priceAddition = Constants.INGREDIENTS_PRICES[type];
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
@@ -55,7 +59,7 @@ class BurgerBuilder extends Component {
       ...this.state.ingredients
     };
     updatedIngredients[type] = updatedCount;
-    const priceDeduction = INGREDIENTS_PRICES[type];
+    const priceDeduction = Constants.INGREDIENTS_PRICES[type];
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice - priceDeduction;
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
@@ -69,22 +73,42 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: false });
   };
   purchasingContinue = () => {
-    alert("purchase contine");
+    // alert("purchase contine");
+    this.setState({ loading: true });
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      customer: {
+        name: "Haekal Budiman",
+        address: "Bandung",
+        email: "haekal@gmail.com"
+      },
+      deliveryMethod: "fastest"
+    };
+    BaseService.post("/orders.json", order)
+      .then(res => this.setState({ loading: false, purchasing: false }))
+      .catch(err => this.setState({ loading: false, purchasing: false }));
   };
   render() {
     const disabledInfo = { ...this.state.ingredients };
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
+    let orderSummary = (
+      <OrderSummary
+        cancel={this.purchasingCancel}
+        continue={this.purchasingContinue}
+        ingredients={this.state.ingredients}
+        price={this.state.totalPrice}
+      />
+    );
+    if (this.state.loading) {
+      orderSummary = <Spinner />;
+    }
     return (
       <Aux>
         <Modal show={this.state.purchasing} modalClose={this.purchasingCancel}>
-          <OrderSummary
-            cancel={this.purchasingCancel}
-            continue={this.purchasingContinue}
-            ingredients={this.state.ingredients}
-            price={this.state.totalPrice}
-          ></OrderSummary>
+          {orderSummary}
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
