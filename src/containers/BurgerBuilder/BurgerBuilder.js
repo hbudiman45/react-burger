@@ -7,7 +7,7 @@ import OrderSummary from "../../components/Burger/OrderSummary";
 import BaseService from "../../services/BaseServices";
 import Spinner from "../../components/UI/Spinner";
 import Constants from "../../config/Constants";
-
+import Checkout from "../../containers/Chechkout/Checkout";
 // const INGREDIENTS_PRICES = {
 //   salad: 0.5,
 //   cheese: 0.4,
@@ -85,9 +85,12 @@ class BurgerBuilder extends Component {
       },
       deliveryMethod: "fastest"
     };
-    BaseService.post("/orders.json", order)
-      .then(res => this.setState({ loading: false, purchasing: false }))
-      .catch(err => this.setState({ loading: false, purchasing: false }));
+
+    // BaseService.post("/orders.json", order)
+    //   .then(res => this.setState({ loading: false, purchasing: false }))
+    //   .catch(err => this.setState({ loading: false, purchasing: false }));
+
+    this.props.history.push("/checkout");
   };
   render() {
     const disabledInfo = { ...this.state.ingredients };
