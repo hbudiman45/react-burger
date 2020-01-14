@@ -7,13 +7,6 @@ import OrderSummary from "../../components/Burger/OrderSummary";
 import BaseService from "../../services/BaseServices";
 import Spinner from "../../components/UI/Spinner";
 import Constants from "../../config/Constants";
-import Checkout from "../../containers/Chechkout/Checkout";
-// const INGREDIENTS_PRICES = {
-//   salad: 0.5,
-//   cheese: 0.4,
-//   meat: 1.3,
-//   bacon: 0.7
-// };
 
 class BurgerBuilder extends Component {
   state = {
@@ -90,7 +83,22 @@ class BurgerBuilder extends Component {
     //   .then(res => this.setState({ loading: false, purchasing: false }))
     //   .catch(err => this.setState({ loading: false, purchasing: false }));
 
-    this.props.history.push("/checkout");
+    // PASSING STATE TO URL
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      queryParams.push(
+        encodeURIComponent(i) +
+          "=" +
+          encodeURIComponent(this.state.ingredients[i])
+      );
+      // console.log(queryParams);
+    }
+    const queryString = queryParams.join("&");
+    // this.props.history.push("/checkout");
+    this.props.history.push({
+      pathname: "/checkout",
+      search: "?" + queryString
+    });
   };
   render() {
     const disabledInfo = { ...this.state.ingredients };
