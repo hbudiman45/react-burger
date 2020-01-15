@@ -7,7 +7,6 @@ const Order = props => {
       <p>
         Price: <strong>USD price</strong>
       </p>
-      {console.log("order2", props.order)}
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { message } from "antd";
 const Orders = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [orders, setOrders] = useState({});
+  const [userId, setUserId] = useState(0);
 
   useEffect(() => {
     const fetchOrders = () => {
@@ -13,7 +14,7 @@ const Orders = props => {
       BaseService.get("/orders.json")
         .then(res => {
           if (res.status === 200) {
-            console.log("data", res.data);
+            // console.log("data", res.data);
             setOrders(Object.values(res.data));
           }
         })
@@ -24,11 +25,8 @@ const Orders = props => {
   }, []);
   return (
     <>
-      {/* {orders.map(order => (
-        <Order />
-      ))} */}
-      <Order orders={orders} />
-      {/* <Order /> */}
+      <Order />
+      {console.log("order", orders)}
       {isLoading ? <h1>Loading..</h1> : null}
     </>
   );
