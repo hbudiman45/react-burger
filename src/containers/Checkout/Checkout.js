@@ -27,7 +27,6 @@ const Checkout = props => {
       } else {
         newIngredients[param[0]] = +param[1];
       }
-      console.log(newIngredients);
     }
     // console.log(query.toString());
     setIngredients(newIngredients);
@@ -37,11 +36,17 @@ const Checkout = props => {
   return (
     <div>
       <h1>Checkout</h1>
+
       <CheckoutSummary
         ingredients={ingredients}
         checkoutCancel={checkoutCancel}
         checkoutContinue={checkoutContinue}
       />
+      {/* <ContactData
+        {...props}
+        ingredients={ingredients}
+        totalPrice={totalPrice}
+      /> */}
       <Route
         path={props.match.url + "/contact-data"}
         render={props => (

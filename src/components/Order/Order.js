@@ -1,13 +1,26 @@
 import React from "react";
+import { Card } from "antd";
 
 const Order = props => {
+  const { order } = props;
+  const { ingredients } = order;
+  // console.log(Object.keys(ingredients));
   return (
-    <div>
-      <p>Ingredients: Salad (1)</p>
+    <Card style={{ width: "100%" }}>
       <p>
-        Price: <strong>USD price</strong>
+        <strong>Ingredients :</strong>
       </p>
-    </div>
+      <ul>
+        {Object.keys(ingredients).map(ing => (
+          <li key={ing}>
+            {ing}: {ingredients[ing]}
+          </li>
+        ))}
+      </ul>
+      <p>
+        Price: <strong>USD {order.price}</strong>
+      </p>
+    </Card>
   );
 };
 
